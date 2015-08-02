@@ -1,0 +1,28 @@
+{
+  "name": "react-format-number",
+  "version": "1.0.0",
+  "description": "A React Component of formatted number input",
+  "main": "./src/FormatNumber.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leftstick/react-format-number.git"
+  },
+  "keywords": [
+    "React",
+    "Number"
+  ],
+  "author": "Howard.Zuo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/leftstick/react-format-number/issues"
+  },
+  "homepage": "https://github.com/leftstick/react-format-number#readme",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-jsx": "^2.0.0",
+    "gulp-webserver": "^0.9.1"
+  }
+}
