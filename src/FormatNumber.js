@@ -255,11 +255,44 @@
         return debounced;
     };
 
+    var getCaretPosition = function(oField) {
+        // Initialize
+        var iCaretPos = 0;
+        // IE Support
+        if (document.selection) {
+            // Set focus on the element
+            oField.focus();
+            // To get cursor position, get empty selection range
+            var oSel = document.selection.createRange();
+            // Move selection start to 0 position
+            oSel.moveStart('character', -oField.value.length);
+            // The caret position is selection length
+            iCaretPos = oSel.text.length;
+        } else if (oField.selectionStart || oField.selectionStart === 0) {
+            iCaretPos = oField.selectionStart;
+        }
+        // Return results
+        return (iCaretPos);
+    };
+
+    var setCaretPosition = function(oField, caretPos) {
+        if (oField.createTextRange) {
+            var range = oField.createTextRange();
+            range.move('character', caretPos);
+            range.select();
+        } else if (oField.selectionStart) {
+            oField.focus();
+            oField.setSelectionRange(caretPos, caretPos);
+        } else {
+            oField.focus();
+        }
+    };
+
     var FormatNumber = React.createClass({
         getInitialState: function() {
             return {src: 0, txt: ''};
         },
-        handleInput: function(src) {
+        handleInput: function(src, field) {
             if (isNaN(src)) {
                 this.setState({src: NaN});
                 if (isFunction(this.props.onChange)) {
@@ -267,9 +300,11 @@
                 }
                 return;
             }
-            this.setState({
-                src: src,
-                txt: format(src, this.props.decimal)
+            var formated = format(src, this.props.decimal);
+            var lastPos = getCaretPosition(field);
+            var newPos = this.props.decimal === 0 ? formated.length - ((src + '').length - lastPos) : formated.length - (this.props.decimal + 1) - ((src + '').length - lastPos);
+            this.setState({src: src, txt: formated}, function() {
+                setCaretPosition(field, newPos);
             });
             if (isFunction(this.props.onChange)) {
                 this.props.onChange(src);
@@ -281,7 +316,7 @@
                 var input = e.target.value;
                 var unformatted = unFormat(input);
                 var src = Number(unformatted);
-                _this.handleInput(src);
+                _this.handleInput(src, e.target);
             }, 500);
         },
         onChange: function(e) {
