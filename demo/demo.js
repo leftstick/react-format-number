@@ -5,6 +5,6 @@
         document.querySelector('#value').innerHTML = value;
     };
 
-    React.render(<FormatNumber decimal={2} onChange={valueChange.bind(this)} />, document.querySelector('#number'));
+    React.render(<FormatNumber decimal={1} onChange={valueChange.bind(this)} />, document.querySelector('#number'));
 
 }(React, window.FormatNumber));

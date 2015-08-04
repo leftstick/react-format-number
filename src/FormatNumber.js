@@ -292,7 +292,13 @@
         getInitialState: function() {
             return {src: 0, txt: ''};
         },
-        handleInput: function(src, field) {
+        getDefaultProps: function() {
+            return {
+                decimal: 0,
+                onChange: function() {}
+            };
+        },
+        handleInput: function(src, srcTxt, field) {
             if (isNaN(src)) {
                 this.setState({src: NaN});
                 if (isFunction(this.props.onChange)) {
@@ -300,9 +306,12 @@
                 }
                 return;
             }
+            if (this.props.decimal > 0) {
+                src = Number(src.toFixed(this.props.decimal));
+            }
             var formated = format(src, this.props.decimal);
             var lastPos = getCaretPosition(field);
-            var newPos = this.props.decimal === 0 ? formated.length - ((src + '').length - lastPos) : formated.length - (this.props.decimal + 1) - ((src + '').length - lastPos);
+            var newPos = formated.length - (srcTxt.length - lastPos);
             this.setState({src: src, txt: formated}, function() {
                 setCaretPosition(field, newPos);
             });
@@ -316,7 +325,7 @@
                 var input = e.target.value;
                 var unformatted = unFormat(input);
                 var src = Number(unformatted);
-                _this.handleInput(src, e.target);
+                _this.handleInput(src, input, e.target);
             }, 500);
         },
         onChange: function(e) {
