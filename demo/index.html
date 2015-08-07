@@ -11,19 +11,352 @@
     <meta http-equiv="Cache-Control" content="no-siteapp" />
 
     <link rel="icon" type="image/png" href="img/favicon.ico">
-    <!-- <link rel="stylesheet" href="prism.css">
-    <link rel="stylesheet" type="text/css" href="bower/materialize/dist/css/materialize.css">
-    <link rel="stylesheet" type="text/css" href="bower/fontawesome/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="libs/prism.css">
+    <link rel="stylesheet" type="text/css" href="libs/materialize/css/materialize.css">
+    <link rel="stylesheet" type="text/css" href="libs/fontawesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="libs/tooltipster/css/tooltipster.css">
     <link rel="stylesheet" type="text/css" href="demo.css">
-    <script type="text/javascript" src="libs/react-0.13.3.min.js"></script>
-    <script type="text/javascript" src="libs/JSXTransformer-0.13.3.js"></script>
 </head>
 <body>
+    <div class="light-green darken-3 valign-wrapper">
+        <div class="valign center" style="width: 100%;">
+            <h1 class="white-text">react-format-number</h1>
+            <a class="btn-floating waves-effect waves-light btn-large blue-grey darken-2 tooltip" href="https://github.com/leftstick/angular-sweetnotifier" title="View On Github">
+                <i class="fa fa-github-square"></i>
+            </a>
+            <p class="white-text">A formatted number input component can be used easily for developers</p>
+        </div>
+    </div>
 
-    <div id="number"></div>
-    <div id="value"></div>
+    <div class="container">
 
+        <h4>Demonstration</h4>
+        <br/>
+
+        <div class="row">
+            <div class="input-field col s12 m6">
+                <i class="material-icons prefix">dialpad</i>
+                <div id="react-number" placeholder="Please type number here..." style="margin-left: 45px;"></div>
+                <!-- <input type="text"> -->
+                <label for="number">Format Number</label>
+            </div>
+            <div class="input-field col s12 m6">
+                <i class="material-icons prefix">info</i>
+                <input id="value" type="text" disabled="" style="color: #000;">
+                <label for="value"></label>
+            </div>
+            <div class="col s12 m6">
+                <span>Decimal: </span>
+                <input name="decimal" type="radio" id="0-v" checked="" value="0"/>
+                <label for="0-v">0</label>
+                <input name="decimal" type="radio" id="1-v"  value="1"/>
+                <label for="1-v">1</label>
+                <input name="decimal" type="radio" id="2-v"  value="2"/>
+                <label for="2-v">2</label>
+                <input name="decimal" type="radio" id="3-v"  value="3"/>
+                <label for="3-v">3</label>
+            </div>
+        </div>
+        <br/>
+
+        <h4>Installation</h4>
+        <br/>
+
+        <h5 class="title">Install with Bower</h5>
+        <p>You can install and manage <code class="snippet">react-format-number</code> using <a href="http://bower.io/">Bower</a>:</p>
+        <pre class="line-numbers"><code class="language-bash">
+bower install react-format-number --save<!--
+        --></code></pre>
+        <br/>
+
+        <h5 class="title">Install with npm</h5>
+        <p>You can also install <code class="snippet">react-format-number</code> using <a href="http://npmjs.org/">npm</a>:</p>
+        <pre class="line-numbers"><code class="language-bash">
+npm install react-format-number --save<!--
+        --></code></pre>
+        <br/>
+
+        <h5 class="title">Download manually</h5>
+        <p>You can even download <code class="snippet">react-format-number</code> from <a href="https://github.com/leftstick/react-format-number/zipball/master">Github</a></p>
+        <br/>
+
+        <h4>Import</h4>
+        <br/>
+
+        <h5 class="title">AMD</h5>
+
+        <pre class="line-numbers"><code class="language-markup">
+&lt;link rel="stylesheet" type="text/css" href="bower_components/react-format-number/dist/react-format-number.min.css"&gt;<!--
+        --></code></pre>
+
+        <pre class="line-numbers"><code class="language-javascript">
+require.config({
+paths: {
+    'angular': 'bower_components/angular/angular.min',
+    'angular-animate': 'bower_components/angular-animate/angular-animate.min',
+    'angular-sweetnotifier': 'bower_components/angular-sweetnotifier/dist/angular-sweetnotifier.min'
+},
+shim: {
+    'angular': {
+        exports: 'angular'
+    },
+    'angular-animate': {
+        deps: ['angular']
+    },
+    'angular-sweetnotifier': {
+        deps: ['angular']
+    }
+}
+});
+
+define(['angular-sweetnotifier'], function(){
+//loaded
+});<!--
+        --></code></pre>
+        <br/>
+
+        <h5 class="title">CommonJS</h5>
+
+        <pre class="line-numbers"><code class="language-markup">
+&lt;link rel="stylesheet" type="text/css" href="node_modules/angular-sweetnotifier/dist/angular-sweetnotifier.min.css"&gt;<!--
+        --></code></pre>
+
+        <pre class="line-numbers"><code class="language-javascript">
+require('angular');
+require('angular-animate');
+require('angular-sweetnotifier');<!--
+        --></code></pre>
+        <br/>
+
+        <h5 class="title">Plain JavaScript</h5>
+
+        <pre class="line-numbers"><code class="language-markup">
+&lt;link rel="stylesheet" type="text/css" href="bower_components/angular-sweetnotifier/dist/angular-sweetnotifier.min.css"&gt;
+&lt;script type="text/javascript" src="bower_components/angular/angular.min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="bower_components/angular-animate/angular-animate.min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="bower_components/angular-sweetnotifier/dist/angular-sweetnotifier.min.js"&gt;&lt;/script&gt;<!--
+        --></code></pre>
+        <br/>
+
+        <h4>Usage</h4>
+        <br/>
+
+        <h5 class="title">Configuration</h5>
+
+        <pre class="line-numbers"><code class="language-javascript">
+angular.module('demo', [
+'angular-sweetnotifier',
+'ngAnimate'
+])
+.config(['notifierProvider', function(notifierProvider) {
+//set position of notification
+//following placement value can be used
+//vertical:   top middle bottom
+//horizontal: left center right
+//top center by default
+notifierProvider.setPlacement('bottom', 'right');
+
+//use native notification while user leave this page for better UX
+//true by default
+notifierProvider.setUseNativeWhileBlur(false);
+
+//set icons for native notification
+//a key/value object is required
+//only info, error, warning, success as be used as key
+//no icon for native notification by default
+notifierProvider.setNativeIcons({
+    info: 'http://findicons.com/files/icons/2166/oxygen/48/document_properties.png',
+    error: 'http://findicons.com/files/icons/989/ivista_2/128/error.png',
+    warning: 'http://findicons.com/files/icons/744/juicy_fruit/128/warning.png',
+    success: 'http://findicons.com/files/icons/719/crystal_clear_actions/64/agt_action_success.png'
+});
+}]);<!--
+        --></code></pre>
+        <br/>
+
+        <h5 class="title">Diective</h5>
+
+        Put following <code class="snippet">directive</code> into your HTML
+
+        <pre class="line-numbers"><code class="language-markup">
+&lt;sweetnotifier placement="{{ placement }}" use-native-while-blur="{{ nativeWhileBlur }}"  native-icons="{{ nativeIcons }}"&gt;&lt;/sweetnotifier&gt;<!--
+        --></code></pre>
+
+        <p><code class="snippet">placement</code>, <code class="snippet">use-native-while-blur</code>, <code class="snippet">native-icons</code> are just like what you saw in above <code class="snippet">configuration</code> phase.</p>
+
+        <p>And attributes has higher priority than <code class="snippet">configuration</code>.</p>
+
+        <p>But be aware that each attribute in <code class="snippet">directive</code> is optional. And can be changed in later use.</p>
+
+        <blockquote>
+            This <code class="snippet">directive</code> is mandatory as notification placeholder, and it can be put anywhere in <code class="snippet">body</code> tag.
+        </blockquote>
+        <br/>
+
+        <h5 class="title">Call notification</h5>
+
+        Calling a notification is very simple as following:
+
+        <pre class="line-numbers"><code class="language-javascript">
+angular.module('demo', [
+'angular-sweetnotifier',
+'ngAnimate'
+])
+.controller('DemoController', function($scope, notifier, UserService) {
+//notifier must be injected as service, in order to have the notification functionality available
+
+$scope.saveUser = function(user){
+    UserService.saveUser(user)
+    .success(function(){
+
+        //emit an success type of notification with specified title and content
+        notifier.emit({
+            type: 'success',
+            title: 'Success',
+            content: 'User have been saved!'
+        });
+    })
+    .error(function(){
+
+        //emit an error type of notification with specified title and content
+        notifier.emit({
+            type: 'error',
+            title: 'Error',
+            content: 'Save user failed!'
+        });
+    });
+};
+});<!--
+        --></code></pre>
+        <br/>
+
+        <h4>API</h4>
+        <br/>
+
+        <h5 class="title">notifierProvider</h5>
+        <br/>
+        <h6>setPlacement(vertical, horizontal)</h6>
+
+        <table class="bordered striped hoverable">
+            <thead>
+              <tr>
+                  <th>Param</th>
+                  <th>Type</th>
+                  <th>Details</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>vertical</td>
+                <td><span class="string-type">string</span></td>
+                <td>Specify the vertical position of the notification. <code class="snippet">top</code>, <code class="snippet">middle</code>, <code class="snippet">bottom</code> can be used</td>
+              </tr>
+              <tr>
+                  <td>horizontal</td>
+                  <td><span class="string-type">string</span></td>
+                  <td>Specify the horizontal position of the notification. <code class="snippet">left</code>, <code class="snippet">center</code>, <code class="snippet">right</code> can be used</td>
+              </tr>
+            </tbody>
+        </table>
+        <br/>
+        <h6>setUseNativeWhileBlur(useNative)</h6>
+
+        <table class="bordered striped hoverable">
+            <thead>
+              <tr>
+                  <th>Param</th>
+                  <th>Type</th>
+                  <th>Details</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>useNative</td>
+                <td><span class="boolean-type">boolean</span></td>
+                <td>Whether to use native notification while user leave this page</td>
+              </tr>
+            </tbody>
+        </table>
+        <br/>
+        <h6>setNativeIcons(icons)</h6>
+
+        <table class="bordered striped hoverable">
+            <thead>
+              <tr>
+                  <th>Param</th>
+                  <th>Type</th>
+                  <th>Details</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>icons</td>
+                <td><span class="object-type">object</span></td>
+                <td>
+                    key/value paires to specify the icon to be used while native notification is active, for example:
+                    <pre class="usenative-doc line-numbers"><code class="language-javascript">
+{
+info: 'http://xxx.com/info.png',
+error: 'http://xxx.com/error.png',
+warning: 'http://xxx.com/warning.png',
+success: 'http://xxx.com/success.png'
+}<!--
+                    --></code></pre>
+                </td>
+              </tr>
+            </tbody>
+        </table>
+        <br/>
+
+        <h5 class="title">notifier</h5>
+        <br/>
+        <h6>emit(options)</h6>
+        <table class="bordered striped hoverable">
+            <thead>
+              <tr>
+                  <th>Param</th>
+                  <th>Type</th>
+                  <th>Details</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>options</td>
+                <td><span class="object-type">object</span></td>
+                <td>
+                    options to describe this notification.
+                    <ul>
+                        <li><strong>type</strong> - {<code class="snippet">string</code>}: can be <code class="snippet">info</code>, <code class="snippet">error</code>, <code class="snippet">warning</code>, <code class="snippet">success</code>. <code class="snippet">info</code> by default</li>
+                        <li><strong>useNative</strong> - {<code class="snippet">boolean</code>}: whether to display this notification using native UI. <code class="snippet">false</code> by default</li>
+                        <li><strong>timeout</strong> - {<code class="snippet">number</code>}: determine how long the notification will be last on the page.(not available for native UI). <code class="snippet">15000</code> by default</li>
+                        <li><strong>title</strong> - {<code class="snippet">string</code>}: title of the notification. empty by default</li>
+                        <li><strong>content</strong> - {<code class="snippet">string</code>}: title of the notification. empty by default</li>
+                    </ul>
+                </td>
+              </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+<footer class="footer">
+        <p>&copy; 2014 Licensed under <a href="http://opensource.org/licenses/MIT" target="_blank">MIT license</a>. by <a href="http://leftstick.github.io/" target="_blank">Howard.Zuo</a>.</p>
+</footer>
+
+    <script type="text/javascript" src="libs/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="libs/tooltipster/js/jquery.tooltipster.min.js"></script>
+    <script type="text/javascript" src="libs/materialize/js/materialize.min.js"></script>
+    <script type="text/javascript" src="libs/react-0.13.3.min.js"></script>
+    <script type="text/javascript" src="libs/JSXTransformer-0.13.3.js"></script>
+    <script type="text/javascript" src="libs/prism.js"></script>
     <script type="text/javascript" src="FormatNumber.js"></script>
     <script type="text/jsx" src="demo.js"></script>
+    <script type="text/javascript">
+        $('.tooltip').tooltipster();
+    </script>
 </body>
 </html>

@@ -290,33 +290,40 @@
 
     var FormatNumber = React.createClass({
         getInitialState: function() {
-            return {src: 0, txt: ''};
+            if (typeof this.props.value === 'undefined') {
+                return {src: 0, txt: ''};
+            }
+            return {
+                src: this.props.value,
+                txt: format(this.props.value, this.props.decimal)
+            };
         },
         getDefaultProps: function() {
             return {
                 decimal: 0,
+                placeholder: '',
                 onChange: function() {}
             };
         },
-        handleInput: function(src, srcTxt, field) {
+        handleInput: function(src, srcTxt, field, props) {
             if (isNaN(src)) {
                 this.setState({src: NaN});
-                if (isFunction(this.props.onChange)) {
-                    this.props.onChange(NaN);
+                if (isFunction(props.onChange)) {
+                    props.onChange(NaN);
                 }
                 return;
             }
-            if (this.props.decimal > 0) {
-                src = Number(src.toFixed(this.props.decimal));
+            if (props.decimal > 0) {
+                src = Number(src.toFixed(props.decimal));
             }
-            var formated = format(src, this.props.decimal);
+            var formated = format(src, props.decimal);
             var lastPos = getCaretPosition(field);
             var newPos = formated.length - (srcTxt.length - lastPos);
             this.setState({src: src, txt: formated}, function() {
                 setCaretPosition(field, newPos);
             });
-            if (isFunction(this.props.onChange)) {
-                this.props.onChange(src);
+            if (isFunction(props.onChange)) {
+                props.onChange(src);
             }
         },
         componentWillMount: function() {
@@ -325,8 +332,11 @@
                 var input = e.target.value;
                 var unformatted = unFormat(input);
                 var src = Number(unformatted);
-                _this.handleInput(src, input, e.target);
+                _this.handleInput(src, input, e.target, _this.props);
             }, 500);
+        },
+        componentWillReceiveProps: function(nextProps) {
+            this.handleInput(this.state.src, this.state.txt, React.findDOMNode(this.refs.userinput), nextProps);
         },
         onChange: function(e) {
             e.persist();
@@ -334,7 +344,11 @@
             this.bounceChange(e);
         },
         render: function() {
-            return (React.createElement('input', {type: "text", onChange: this.onChange, value: this.state.txt}));
+            return (React.createElement('input', {type: "text",
+                      ref: "userinput",
+                      onChange: this.onChange,
+                      value: this.state.txt,
+                      placeholder: this.props.placeholder}));
         }
     });
 
