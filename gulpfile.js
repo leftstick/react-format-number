@@ -21,3 +21,19 @@ gulp.task('dev', ['transform'], function() {
             fallback: 'index.html'
         }));
 });
+
+gulp.task('transform-dist', function() {
+    return gulp.src('./src/FormatNumber.js')
+        .pipe(jsx({factory: 'React.createElement'}))
+        .pipe(gulp.dest('dist'));
+});
+
+gulp.task('dist', ['transform-dist'], function() {
+    var uglify = require('gulp-uglify');
+    var rename = require('gulp-rename');
+
+    gulp.src('./dist/FormatNumber.js')
+        .pipe(uglify())
+        .pipe(rename({extname: '.min.js'}))
+        .pipe(gulp.dest('./dist/'));
+});

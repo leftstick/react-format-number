@@ -23,3 +23,38 @@
     border-color: #000;
     background-color: #000;
 }
+
+.string-type{
+    color: #fff;
+    background-color: #3a87ad;
+    padding: 2px 4px;
+    border-radius: 2px;
+}
+.boolean-type{
+    color: #fff;
+    background-color: rgb(18, 131, 39);
+    padding: 2px 4px;
+    border-radius: 2px;
+}
+.object-type{
+    color: #fff;
+    background-color: #999;
+    padding: 2px 4px;
+    border-radius: 2px;
+}
+.number-type{
+    color: #fff;
+    background-color: rgb(189, 63, 66);
+    padding: 2px 4px;
+    border-radius: 2px;
+}
+.function-type{
+    color: #fff;
+    background-color: purple;
+    padding: 2px 4px;
+    border-radius: 2px;
+}
+
+.footer{
+    text-align: center;
+}

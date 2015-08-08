@@ -295,12 +295,12 @@
             }
             return {
                 src: this.props.value,
-                txt: format(this.props.value, this.props.decimal)
+                txt: format(this.props.value, this.props.fractionSize)
             };
         },
         getDefaultProps: function() {
             return {
-                decimal: 0,
+                fractionSize: 0,
                 placeholder: '',
                 onChange: function() {}
             };
@@ -313,10 +313,10 @@
                 }
                 return;
             }
-            if (props.decimal > 0) {
-                src = Number(src.toFixed(props.decimal));
+            if (props.fractionSize > 0) {
+                src = Number(src.toFixed(props.fractionSize));
             }
-            var formated = format(src, props.decimal);
+            var formated = format(src, props.fractionSize);
             var lastPos = getCaretPosition(field);
             var newPos = formated.length - (srcTxt.length - lastPos);
             this.setState({src: src, txt: formated}, function() {
