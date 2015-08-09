@@ -5,7 +5,12 @@ A number input component
 [![NPM version][npm-image]][npm-url]
 
 
->For more Information: [documentation](http://leftstick.github.io/react-format-number/)
+![](https://raw.githubusercontent.com/leftstick/react-format-number/master/docs/demo.gif)
+
+> This component doesn't provide any style, all the look and feel you see in the demo is provided by [materializecss](http://materializecss.com/).
+
+
+For more Information: [documentation](http://leftstick.github.io/react-format-number/)
 
 
 
