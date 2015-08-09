@@ -12,7 +12,11 @@
         options.previousValue = value;
     };
 
-    var component = React.render(<FormatNumber fractionSize={options.decimal} onChange={valueChange} value={options.previousValue}/>, $('#react-number')[0]);
+    var component = React.render(React.createElement(FormatNumber, {
+        fractionSize: options.decimal,
+        onChange: valueChange,
+        value: options.previousValue
+    }), $('#react-number')[0]);
 
     $('#react-number input').on('focus', function() {
         $(this).parent().siblings().addClass('active');
