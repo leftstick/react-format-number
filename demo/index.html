@@ -36,7 +36,7 @@
         <div class="row">
             <div class="input-field col s12 m6">
                 <i class="material-icons prefix">dialpad</i>
-                <div id="react-number" placeholder="Please type number here..." style="margin-left: 45px;"></div>
+                <div id="react-number" style="margin-left: 45px;"></div>
                 <!-- <input type="text"> -->
                 <label for="number">Format Number</label>
             </div>
@@ -125,12 +125,15 @@ var FormatNumber = require('react-format-number');<!--
         <pre class="line-numbers"><code class="language-jsx">
 
 var initValue = 10;
+var inlineStyle = {
+    color: 'red'
+};
 
 var valueChange = function(newValue){
     console.log('Value is changed, new value is: ', newValue);
 };
 
-React.render(&lt;FormatNumber fractionSize={2} onChange={valueChange} value={initValue} placeholder={ 'Please type number here...' }/&gt;, mountNode);<!--
+React.render(&lt;FormatNumber fractionSize={2} onChange={valueChange} value={initValue} style={ inlineStyle }/&gt;, mountNode);<!--
         --></code></pre>
         <br/>
 
@@ -166,9 +169,9 @@ React.render(&lt;FormatNumber fractionSize={2} onChange={valueChange} value={ini
                   <td>Initial value of component</td>
               </tr>
               <tr>
-                  <td>placeholder</td>
-                  <td><span class="string-type">string</span></td>
-                  <td>A short hint that describes the expected value of the component</td>
+                  <td>style</td>
+                  <td><span class="object-type">object</span></td>
+                  <td>An object to describe the style of component. The key is the camelCased version of the style name, and value is the style's value, usually a string</td>
               </tr>
             </tbody>
         </table>

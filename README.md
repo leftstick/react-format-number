@@ -1,7 +1,7 @@
 # react-format-number
 A number input component
 
-![](http://img.shields.io/badge/bower_module-v1.0.0-green.svg)
+![](http://img.shields.io/badge/bower_module-v1.1.0-green.svg)
 [![NPM version][npm-image]][npm-url]
 
 

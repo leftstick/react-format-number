@@ -1,7 +1,7 @@
 /**
  *
  *  @author Howard.Zuo
- *  @date Aug 1, 2015
+ *  @date Sep 7, 2015
  *
  **/
 (function(global, factory) {
@@ -289,22 +289,28 @@
     };
 
     var FormatNumber = React.createClass({
+        propTypes: {
+            value: React.PropTypes.string,
+            fractionSize: React.PropTypes.number,
+            onChange: React.PropTypes.func,
+            style: React.PropTypes.object
+        },
+
         getInitialState: function() {
-            if (typeof this.props.value === 'undefined') {
-                return {src: 0, txt: ''};
-            }
             return {
                 src: this.props.value,
                 txt: format(this.props.value, this.props.fractionSize)
             };
         },
+
         getDefaultProps: function() {
             return {
                 fractionSize: 0,
-                placeholder: '',
+                value: '0',
                 onChange: function() {}
             };
         },
+
         handleInput: function(src, srcTxt, field, props) {
             if (isNaN(src)) {
                 this.setState({src: NaN});
@@ -326,6 +332,7 @@
                 props.onChange(src);
             }
         },
+
         componentWillMount: function() {
             var _this = this;
             this.bounceChange = debounce(function(e) {
@@ -335,20 +342,27 @@
                 _this.handleInput(src, input, e.target, _this.props);
             }, 500);
         },
+
+        componentDidMount: function() {
+            this.handleInput(this.state.src, this.state.txt, React.findDOMNode(this.refs.userinput), this.props);
+        },
+
         componentWillReceiveProps: function(nextProps) {
             this.handleInput(this.state.src, this.state.txt, React.findDOMNode(this.refs.userinput), nextProps);
         },
+
         onChange: function(e) {
             e.persist();
             this.setState({txt: e.target.value});
             this.bounceChange(e);
         },
+
         render: function() {
             return (React.createElement('input', {type: "text",
                       ref: "userinput",
-                      onChange: this.onChange,
-                      value: this.state.txt,
-                      placeholder: this.props.placeholder}));
+                      style:  this.props.style,
+                      onChange:  this.onChange,
+                      value:  this.state.txt}));
         }
     });
 
