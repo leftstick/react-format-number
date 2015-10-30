@@ -1,7 +1,7 @@
 /**
  *
  *  @author Howard.Zuo
- *  @date Sep 7, 2015
+ *  @date Oct 30, 2015
  *
  **/
 (function(global, factory) {

@@ -1,4 +1,4 @@
-(function(React, FormatNumber, $) {
+(function(React, ReactDOM, FormatNumber, $) {
     'use strict';
 
     $('#react-number').on('focus', 'input', function() {
@@ -24,7 +24,7 @@
         options.previousValue = value;
     };
 
-    var component = React.render(React.createElement(FormatNumber, {
+    var component = ReactDOM.render(React.createElement(FormatNumber, {
         fractionSize: options.decimal,
         onChange: valueChange,
         value: options.previousValue
@@ -38,4 +38,4 @@
         });
     });
 
-}(React, window.FormatNumber, jQuery));
+}(React, ReactDOM, window.FormatNumber, jQuery));
