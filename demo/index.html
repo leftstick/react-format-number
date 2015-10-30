@@ -70,7 +70,7 @@ bower install react-format-number --save<!--
         <br/>
 
         <h5 class="title">Install with npm</h5>
-        <p>You can also install <code class="snippet">react-format-number</code> using <a href="http://npmjs.org/">npm</a>:</p>
+        <p>You can also install <code class="snippet">react-format-number</code> using <a href="https://www.npmjs.com/package/react-format-number">npm</a>:</p>
         <pre class="line-numbers"><code class="language-bash">
 npm install react-format-number --save<!--
         --></code></pre>
@@ -85,35 +85,59 @@ npm install react-format-number --save<!--
 
         <h5 class="title">AMD</h5>
 
-        <pre class="line-numbers"><code class="language-javascript">
+        <pre class="line-numbers"><code class="language-jsx">
 require.config({
     paths: {
+        'jquery': 'bower_components/jquery/dist/jquery.min.js',
         'react': 'bower_components/react/react.min',
+        'react-dom': 'bower_components/react/react-dom.min',
         'react-format-number': 'bower_components/react-format-number/dist/react-format-number.min'
     }
 });
 
-define(['react-format-number'], function(FormatNumber){
-//loaded
+define(['react-format-number', 'react-dom', 'jquery'], function(FormatNumber, ReactDOM, $){
+    //loaded
+    var onChange = function(newValue){
+        console.log('new value is: ', newValue);
+    };
+    ReactDOM.render(&lt;FormatNumber fractionSize={ 3 } onChange={ onChange } value={ 100 }/&gt;, $('#react-number')[0]);
 });<!--
         --></code></pre>
         <br/>
 
         <h5 class="title">CommonJS</h5>
 
-        <pre class="line-numbers"><code class="language-javascript">
-var FormatNumber = require('react-format-number');<!--
+        <pre class="line-numbers"><code class="language-jsx">
+var $ = require('jquery');
+var ReactDOM = require('react-dom');
+var FormatNumber = require('react-format-number');
+
+var onChange = function(newValue){
+    console.log('new value is: ', newValue);
+};
+
+ReactDOM.render(&lt;FormatNumber fractionSize={ 3 } onChange={ onChange } value={ 100 }/&gt;, $('#react-number')[0]);<!--
         --></code></pre>
         <br/>
 
         <h5 class="title">Plain JavaScript</h5>
 
         <pre class="line-numbers"><code class="language-markup">
+&lt;script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript" src="bower_components/react/react.min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="bower_components/react/react-dom.min.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript" src="bower_components/react-format-number/dist/react-format-number.min.js"&gt;&lt;/script&gt;
 &lt;script type="text/javascript"&gt;
 
-    var FormatNumber = window.FormatNumber;
+    var onChange = function(newValue){
+        console.log('new value is: ', newValue);
+    };
+
+    ReactDOM.render(React.createElement(FormatNumber, {
+        fractionSize: 2,
+        onChange: onChange,
+        value: 100
+    }), $('#react-number')[0]);
 
 &lt;/script&gt;<!--
         --></code></pre>
@@ -185,7 +209,8 @@ React.render(&lt;FormatNumber fractionSize={2} onChange={valueChange} value={ini
     <script type="text/javascript" src="http://libs.cdnjs.net/jquery/2.1.4/jquery.min.js"></script>
     <script type="text/javascript" src="http://libs.cdnjs.net/tooltipster/3.3.0/js/jquery.tooltipster.min.js"></script>
     <script type="text/javascript" src="http://libs.cdnjs.net/materialize/0.97.0/js/materialize.min.js"></script>
-    <script type="text/javascript" src="http://libs.cdnjs.net/react/0.13.3/react.min.js"></script>
+    <script type="text/javascript" src="http://libs.cdnjs.net/react/0.14.1/react.min.js"></script>
+    <script type="text/javascript" src="http://libs.cdnjs.net/react/0.14.1/react-dom.min.js"></script>
     <script type="text/javascript" src="libs/prism.js"></script>
     <script type="text/javascript" src="FormatNumber.js"></script>
     <script type="text/javascript" src="demo.js"></script>
