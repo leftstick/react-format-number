@@ -1,7 +1,7 @@
 # react-format-number
 A number input component
 
-![](http://img.shields.io/badge/bower_module-v1.2.0-green.svg)
+![][bower-url]
 [![NPM version][npm-image]][npm-url]
 
 
@@ -18,6 +18,6 @@ For more Information: [documentation](http://leftstick.github.io/react-format-nu
 
 [MIT License](https://raw.githubusercontent.com/leftstick/react-format-number/master/LICENSE)
 
-
+[bower-url]: https://img.shields.io/bower/v/react-format-number.svg
 [npm-url]: https://npmjs.org/package/react-format-number
 [npm-image]: https://badge.fury.io/js/react-format-number.png
