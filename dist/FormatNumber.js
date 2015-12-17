@@ -4,7 +4,7 @@
  *  @date Oct 30, 2015
  *
  **/
-(function(global, factory) {
+(function (global, factory) {
     'use strict';
 
     if (typeof exports === 'object') {
@@ -14,20 +14,19 @@
     } else {
         global.FormatNumber = factory(global.React);
     }
-
-}(window, function(React) {
+})(window, function (React) {
     'use strict';
 
-    var isObject = function(value) {
+    var isObject = function (value) {
         var type = typeof value;
         return !!value && (type == 'object' || type == 'function');
     };
 
-    var isUndefined = function(value) {
+    var isUndefined = function (value) {
         return typeof value === 'undefined';
     };
 
-    var isFunction = function(value) {
+    var isFunction = function (value) {
         return isObject(value) && Object.prototype.toString.call(value) === '[object Function]';
     };
 
@@ -48,7 +47,7 @@
     };
 
     //copied from AngularJS
-    var format = function(number, fractionSize) {
+    var format = function (number, fractionSize) {
         if (isObject(number)) {
             return '';
         }
@@ -102,7 +101,7 @@
             var lgroup = NUMBER_FORMATS.PATTERN.lgSize;
             var group = NUMBER_FORMATS.PATTERN.gSize;
 
-            if (whole.length >= (lgroup + group)) {
+            if (whole.length >= lgroup + group) {
                 pos = whole.length - lgroup;
                 for (i = 0; i < pos; i++) {
                     if ((pos - i) % group === 0 && i !== 0) {
@@ -138,20 +137,18 @@
             isNegative = false;
         }
 
-        parts.push(isNegative ? NUMBER_FORMATS.PATTERN.negPre : NUMBER_FORMATS.PATTERN.posPre,
-            formatedText,
-            isNegative ? NUMBER_FORMATS.PATTERN.negSuf : NUMBER_FORMATS.PATTERN.posSuf);
+        parts.push(isNegative ? NUMBER_FORMATS.PATTERN.negPre : NUMBER_FORMATS.PATTERN.posPre, formatedText, isNegative ? NUMBER_FORMATS.PATTERN.negSuf : NUMBER_FORMATS.PATTERN.posSuf);
         return parts.join('');
     };
 
-    var unFormat = function(str) {
+    var unFormat = function (str) {
         if (!str) {
             return '';
         }
         return str.replace(/,/g, '');
     };
 
-    var debounce = function(func, wait, options) {
+    var debounce = function (func, wait, options) {
         var args;
         var maxTimeoutId;
         var result;
@@ -167,7 +164,7 @@
         if (typeof func != 'function') {
             throw new TypeError('Expected a function');
         }
-        wait = wait < 0 ? 0 : (+wait || 0);
+        wait = wait < 0 ? 0 : +wait || 0;
         if (isObject(options)) {
             leading = !!options.leading;
             maxWait = 'maxWait' in options && Math.max(+options.maxWait || 0, wait);
@@ -255,7 +252,7 @@
         return debounced;
     };
 
-    var getCaretPosition = function(oField) {
+    var getCaretPosition = function (oField) {
         // Initialize
         var iCaretPos = 0;
         // IE Support
@@ -272,10 +269,10 @@
             iCaretPos = oField.selectionStart;
         }
         // Return results
-        return (iCaretPos);
+        return iCaretPos;
     };
 
-    var setCaretPosition = function(oField, caretPos) {
+    var setCaretPosition = function (oField, caretPos) {
         if (oField.createTextRange) {
             var range = oField.createTextRange();
             range.move('character', caretPos);
@@ -289,6 +286,8 @@
     };
 
     var FormatNumber = React.createClass({
+        displayName: 'FormatNumber',
+
         propTypes: {
             value: React.PropTypes.string,
             fractionSize: React.PropTypes.number,
@@ -296,24 +295,24 @@
             style: React.PropTypes.object
         },
 
-        getInitialState: function() {
+        getInitialState: function () {
             return {
                 src: this.props.value,
                 txt: format(this.props.value, this.props.fractionSize)
             };
         },
 
-        getDefaultProps: function() {
+        getDefaultProps: function () {
             return {
                 fractionSize: 0,
                 value: '0',
-                onChange: function() {}
+                onChange: function () {}
             };
         },
 
-        handleInput: function(src, srcTxt, field, props) {
+        handleInput: function (src, srcTxt, field, props) {
             if (isNaN(src)) {
-                this.setState({src: NaN});
+                this.setState({ src: NaN });
                 if (isFunction(props.onChange)) {
                     props.onChange(NaN);
                 }
@@ -325,7 +324,7 @@
             var formated = format(src, props.fractionSize);
             var lastPos = getCaretPosition(field);
             var newPos = formated.length - (srcTxt.length - lastPos);
-            this.setState({src: src, txt: formated}, function() {
+            this.setState({ src: src, txt: formated }, function () {
                 setCaretPosition(field, newPos);
             });
             if (isFunction(props.onChange)) {
@@ -333,9 +332,9 @@
             }
         },
 
-        componentWillMount: function() {
+        componentWillMount: function () {
             var _this = this;
-            this.bounceChange = debounce(function(e) {
+            this.bounceChange = debounce(function (e) {
                 var input = e.target.value;
                 var unformatted = unFormat(input);
                 var src = Number(unformatted);
@@ -343,28 +342,28 @@
             }, 500);
         },
 
-        componentDidMount: function() {
+        componentDidMount: function () {
             this.handleInput(this.state.src, this.state.txt, React.findDOMNode(this.refs.userinput), this.props);
         },
 
-        componentWillReceiveProps: function(nextProps) {
+        componentWillReceiveProps: function (nextProps) {
             this.handleInput(this.state.src, this.state.txt, React.findDOMNode(this.refs.userinput), nextProps);
         },
 
-        onChange: function(e) {
+        onChange: function (e) {
             e.persist();
-            this.setState({txt: e.target.value});
+            this.setState({ txt: e.target.value });
             this.bounceChange(e);
         },
 
-        render: function() {
-            return (React.createElement('input', {type: "text",
-                      ref: "userinput",
-                      style:  this.props.style,
-                      onChange:  this.onChange,
-                      value:  this.state.txt}));
+        render: function () {
+            return React.createElement('input', { type: 'text',
+                ref: 'userinput',
+                style: this.props.style,
+                onChange: this.onChange,
+                value: this.state.txt });
         }
     });
 
     return FormatNumber;
-}));
+});

@@ -1,11 +1,11 @@
 'use strict';
 
 var gulp = require('gulp');
-var jsx = require('gulp-jsx');
+var babel = require('gulp-babel');
 
 gulp.task('transform', function() {
     return gulp.src('./src/FormatNumber.js')
-        .pipe(jsx({factory: 'React.createElement'}))
+        .pipe(babel({presets: ['react']}))
         .pipe(gulp.dest('demo'));
 });
 
@@ -24,7 +24,7 @@ gulp.task('dev', ['transform'], function() {
 
 gulp.task('transform-dist', function() {
     return gulp.src('./src/FormatNumber.js')
-        .pipe(jsx({factory: 'React.createElement'}))
+        .pipe(babel({presets: ['react']}))
         .pipe(gulp.dest('dist'));
 });
 
