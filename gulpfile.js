@@ -5,7 +5,7 @@ var babel = require('gulp-babel');
 
 gulp.task('transform', function() {
     return gulp.src('./src/FormatNumber.js')
-        .pipe(babel({presets: ['react']}))
+        .pipe(babel({presets: ['react','es2015']}))
         .pipe(gulp.dest('demo'));
 });
 
@@ -24,7 +24,7 @@ gulp.task('dev', ['transform'], function() {
 
 gulp.task('transform-dist', function() {
     return gulp.src('./src/FormatNumber.js')
-        .pipe(babel({presets: ['react']}))
+        .pipe(babel({presets: ['react','es2015']}))
         .pipe(gulp.dest('dist'));
 });
 

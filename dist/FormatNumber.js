@@ -1,13 +1,26 @@
+'use strict';
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
+
 /**
  *
  *  @author Howard.Zuo
  *  @date Oct 30, 2015
  *
  **/
+
 (function (global, factory) {
     'use strict';
 
-    if (typeof exports === 'object') {
+    if ((typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) === 'object') {
         module.exports = factory(require('react'));
     } else if (typeof define === 'function' && define.amd) {
         define(['react'], factory);
@@ -17,17 +30,21 @@
 })(window, function (React) {
     'use strict';
 
-    var isObject = function (value) {
-        var type = typeof value;
+    var isObject = function isObject(value) {
+        var type = typeof value === 'undefined' ? 'undefined' : _typeof(value);
         return !!value && (type == 'object' || type == 'function');
     };
 
-    var isUndefined = function (value) {
+    var isUndefined = function isUndefined(value) {
         return typeof value === 'undefined';
     };
 
-    var isFunction = function (value) {
-        return isObject(value) && Object.prototype.toString.call(value) === '[object Function]';
+    var toFixed = function toFixed(number, fractionSize) {
+        var patt = new RegExp('\\d+(?:\\.\\d{0,' + fractionSize + '})?');
+        if (fractionSize === 0) {
+            patt = new RegExp('\\d+');
+        }
+        return Number(number.toString().match(patt));
     };
 
     var NUMBER_FORMATS = {
@@ -47,7 +64,7 @@
     };
 
     //copied from AngularJS
-    var format = function (number, fractionSize) {
+    var format = function format(number, fractionSize) {
         if (isObject(number)) {
             return '';
         }
@@ -66,7 +83,7 @@
         var parts = [];
 
         if (isInfinity) {
-            formatedText = '\u221e';
+            formatedText = '∞';
         }
 
         if (!isInfinity && numStr.indexOf('e') !== -1) {
@@ -141,14 +158,14 @@
         return parts.join('');
     };
 
-    var unFormat = function (str) {
+    var unFormat = function unFormat(str) {
         if (!str) {
             return '';
         }
         return str.replace(/,/g, '');
     };
 
-    var debounce = function (func, wait, options) {
+    var debounce = function debounce(func, wait, options) {
         var args;
         var maxTimeoutId;
         var result;
@@ -252,7 +269,7 @@
         return debounced;
     };
 
-    var getCaretPosition = function (oField) {
+    var getCaretPosition = function getCaretPosition(oField) {
         // Initialize
         var iCaretPos = 0;
         // IE Support
@@ -272,7 +289,7 @@
         return iCaretPos;
     };
 
-    var setCaretPosition = function (oField, caretPos) {
+    var setCaretPosition = function setCaretPosition(oField, caretPos) {
         if (oField.createTextRange) {
             var range = oField.createTextRange();
             range.move('character', caretPos);
@@ -285,85 +302,85 @@
         }
     };
 
-    var FormatNumber = React.createClass({
-        displayName: 'FormatNumber',
+    var FormatNumber = (function (_React$Component) {
+        _inherits(FormatNumber, _React$Component);
 
-        propTypes: {
-            value: React.PropTypes.string,
-            fractionSize: React.PropTypes.number,
-            onChange: React.PropTypes.func,
-            style: React.PropTypes.object
-        },
+        function FormatNumber(props) {
+            _classCallCheck(this, FormatNumber);
 
-        getInitialState: function () {
-            return {
-                src: this.props.value,
-                txt: format(this.props.value, this.props.fractionSize)
-            };
-        },
+            var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(FormatNumber).call(this, props));
 
-        getDefaultProps: function () {
-            return {
-                fractionSize: 0,
-                value: '0',
-                onChange: function () {}
-            };
-        },
-
-        handleInput: function (src, srcTxt, field, props) {
-            if (isNaN(src)) {
-                this.setState({ src: NaN });
-                if (isFunction(props.onChange)) {
-                    props.onChange(NaN);
-                }
-                return;
-            }
-            if (props.fractionSize > 0) {
-                src = Number(src.toFixed(props.fractionSize));
-            }
-            var formated = format(src, props.fractionSize);
-            var lastPos = getCaretPosition(field);
-            var newPos = formated.length - (srcTxt.length - lastPos);
-            this.setState({ src: src, txt: formated }, function () {
-                setCaretPosition(field, newPos);
-            });
-            if (isFunction(props.onChange)) {
-                props.onChange(src);
-            }
-        },
-
-        componentWillMount: function () {
-            var _this = this;
-            this.bounceChange = debounce(function (e) {
-                var input = e.target.value;
-                var unformatted = unFormat(input);
-                var src = Number(unformatted);
-                _this.handleInput(src, input, e.target, _this.props);
+            _this.onChange = _this.onChange.bind(_this);
+            _this.handleInput = _this.handleInput.bind(_this);
+            _this.bounceChange = debounce(function () {
+                return _this.handleInput(_this.props);
             }, 500);
-        },
-
-        componentDidMount: function () {
-            this.handleInput(this.state.src, this.state.txt, React.findDOMNode(this.refs.userinput), this.props);
-        },
-
-        componentWillReceiveProps: function (nextProps) {
-            this.handleInput(this.state.src, this.state.txt, React.findDOMNode(this.refs.userinput), nextProps);
-        },
-
-        onChange: function (e) {
-            e.persist();
-            this.setState({ txt: e.target.value });
-            this.bounceChange(e);
-        },
-
-        render: function () {
-            return React.createElement('input', { type: 'text',
-                ref: 'userinput',
-                style: this.props.style,
-                onChange: this.onChange,
-                value: this.state.txt });
+            return _this;
         }
-    });
+
+        _createClass(FormatNumber, [{
+            key: 'componentDidMount',
+            value: function componentDidMount() {
+                this.refs.userinput.value = this.props.value;
+                this.handleInput(this.props);
+            }
+        }, {
+            key: 'componentWillReceiveProps',
+            value: function componentWillReceiveProps(nextProps) {
+                this.refs.userinput.value = nextProps.value;
+                this.handleInput(nextProps);
+            }
+        }, {
+            key: 'handleInput',
+            value: function handleInput(props) {
+                var field = React.findDOMNode(this.refs.userinput);
+                var srcTxt = this.refs.userinput.value;
+                var unformatted = unFormat(srcTxt);
+                var src = Number(unformatted);
+
+                if (isNaN(src)) {
+                    props.onChange(NaN);
+                    return;
+                }
+                if (props.fractionSize >= 0) {
+                    src = toFixed(src, props.fractionSize);
+                }
+                var formated = format(src, props.fractionSize);
+                var lastPos = getCaretPosition(field);
+                var newPos = formated.length - (srcTxt.length - lastPos);
+                props.onChange(src);
+                field.value = formated;
+                setCaretPosition(field, newPos);
+            }
+        }, {
+            key: 'onChange',
+            value: function onChange(e) {
+                this.bounceChange();
+            }
+        }, {
+            key: 'render',
+            value: function render() {
+                return React.createElement('input', { type: 'text',
+                    ref: 'userinput',
+                    style: this.props.style,
+                    onChange: this.onChange });
+            }
+        }]);
+
+        return FormatNumber;
+    })(React.Component);
+
+    FormatNumber.propTypes = {
+        fractionSize: React.PropTypes.number,
+        onChange: React.PropTypes.func,
+        value: React.PropTypes.number
+    };
+
+    FormatNumber.defaultProps = {
+        fractionSize: 0,
+        onChange: function onChange() {},
+        value: 0
+    };
 
     return FormatNumber;
 });

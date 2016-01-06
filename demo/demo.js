@@ -16,7 +16,7 @@
 
     var options = {
         decimal: Number($('input[name="decimal"]:checked').val()),
-        previousValue: undefined
+        previousValue: 9999
     };
 
     var valueChange = function(value) {
@@ -24,7 +24,7 @@
         options.previousValue = value;
     };
 
-    var component = ReactDOM.render(React.createElement(FormatNumber, {
+    ReactDOM.render(React.createElement(FormatNumber, {
         fractionSize: options.decimal,
         onChange: valueChange,
         value: options.previousValue
@@ -32,10 +32,11 @@
 
     $('input[name="decimal"]').on('change', function() {
         options.decimal = Number($(this).val());
-        component.setProps({
+        ReactDOM.render(React.createElement(FormatNumber, {
             fractionSize: options.decimal,
+            onChange: valueChange,
             value: options.previousValue
-        });
+        }), $('#react-number')[0]);
     });
 
 }(React, ReactDOM, window.FormatNumber, jQuery));

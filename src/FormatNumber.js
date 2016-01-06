@@ -4,9 +4,9 @@
  *  @date Oct 30, 2015
  *
  **/
+
 (function(global, factory) {
     'use strict';
-
     if (typeof exports === 'object') {
         module.exports = factory(require('react'));
     } else if (typeof define === 'function' && define.amd) {
@@ -27,8 +27,12 @@
         return typeof value === 'undefined';
     };
 
-    var isFunction = function(value) {
-        return isObject(value) && Object.prototype.toString.call(value) === '[object Function]';
+    var toFixed = function(number, fractionSize) {
+        var patt = new RegExp('\\d+(?:\\.\\d{0,' + fractionSize + '})?');
+        if (fractionSize === 0) {
+            patt = new RegExp('\\d+');
+        }
+        return Number(number.toString().match(patt));
     };
 
     var NUMBER_FORMATS = {
@@ -288,83 +292,73 @@
         }
     };
 
-    var FormatNumber = React.createClass({
-        propTypes: {
-            value: React.PropTypes.string,
-            fractionSize: React.PropTypes.number,
-            onChange: React.PropTypes.func,
-            style: React.PropTypes.object
-        },
+    class FormatNumber extends React.Component {
 
-        getInitialState: function() {
-            return {
-                src: this.props.value,
-                txt: format(this.props.value, this.props.fractionSize)
-            };
-        },
+        constructor(props) {
+            super(props);
 
-        getDefaultProps: function() {
-            return {
-                fractionSize: 0,
-                value: '0',
-                onChange: function() {}
-            };
-        },
+            this.onChange = this.onChange.bind(this);
+            this.handleInput = this.handleInput.bind(this);
+            this.bounceChange = debounce(() => this.handleInput(this.props), 500);
+        }
 
-        handleInput: function(src, srcTxt, field, props) {
+        componentDidMount() {
+            this.refs.userinput.value = this.props.value;
+            this.handleInput(this.props);
+        }
+
+        componentWillReceiveProps(nextProps) {
+            this.refs.userinput.value = nextProps.value;
+            this.handleInput(nextProps);
+        }
+
+        handleInput(props) {
+            var field = React.findDOMNode(this.refs.userinput);
+            var srcTxt = this.refs.userinput.value;
+            var unformatted = unFormat(srcTxt);
+            var src = Number(unformatted);
+
             if (isNaN(src)) {
-                this.setState({src: NaN});
-                if (isFunction(props.onChange)) {
-                    props.onChange(NaN);
-                }
+                props.onChange(NaN);
                 return;
             }
-            if (props.fractionSize > 0) {
-                src = Number(src.toFixed(props.fractionSize));
+            if (props.fractionSize >= 0) {
+                src = toFixed(src, props.fractionSize);
             }
             var formated = format(src, props.fractionSize);
             var lastPos = getCaretPosition(field);
             var newPos = formated.length - (srcTxt.length - lastPos);
-            this.setState({src: src, txt: formated}, function() {
-                setCaretPosition(field, newPos);
-            });
-            if (isFunction(props.onChange)) {
-                props.onChange(src);
-            }
-        },
-
-        componentWillMount: function() {
-            var _this = this;
-            this.bounceChange = debounce(function(e) {
-                var input = e.target.value;
-                var unformatted = unFormat(input);
-                var src = Number(unformatted);
-                _this.handleInput(src, input, e.target, _this.props);
-            }, 500);
-        },
-
-        componentDidMount: function() {
-            this.handleInput(this.state.src, this.state.txt, React.findDOMNode(this.refs.userinput), this.props);
-        },
-
-        componentWillReceiveProps: function(nextProps) {
-            this.handleInput(this.state.src, this.state.txt, React.findDOMNode(this.refs.userinput), nextProps);
-        },
-
-        onChange: function(e) {
-            e.persist();
-            this.setState({txt: e.target.value});
-            this.bounceChange(e);
-        },
-
-        render: function() {
-            return (<input type='text'
-                      ref='userinput'
-                      style={ this.props.style }
-                      onChange={ this.onChange }
-                      value={ this.state.txt } />);
+            props.onChange(src);
+            field.value = formated;
+            setCaretPosition(field, newPos);
         }
-    });
+
+        onChange(e) {
+            this.bounceChange();
+        }
+
+        render() {
+            return (
+                <input type='text'
+                  ref='userinput'
+                  style={ this.props.style }
+                  onChange={ this.onChange } />
+                );
+        }
+
+    }
+
+    FormatNumber.propTypes = {
+        fractionSize: React.PropTypes.number,
+        onChange: React.PropTypes.func,
+        value: React.PropTypes.number
+    };
+
+    FormatNumber.defaultProps = {
+        fractionSize: 0,
+        onChange: function() {},
+        value: 0
+    };
 
     return FormatNumber;
 }));
